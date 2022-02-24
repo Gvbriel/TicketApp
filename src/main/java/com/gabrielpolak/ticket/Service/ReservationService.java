@@ -42,14 +42,6 @@ public class ReservationService {
 
         screening.removeTickets(ticketList.size());
         screeningRepository.save(screening);
-//        tickets.forEach((key, value)->{
-//            System.out.println(key + " " +  value);
-//            for(int i = 0; i < Integer.valueOf(tickets.get(key)); i++){
-//                ticketList.add(Ticket.CreateNewTicket(TicketType.valueOf(key.toUpperCase())));
-//                System.out.println(TicketType.valueOf(key.toUpperCase(Locale.ROOT)));
-//            }
-//        });
-
 
         Reservation reservation = Reservation.CreateNewReservation(ticketList, screening, email);
         reservationRepository.save(reservation);
