@@ -1,9 +1,6 @@
 package com.gabrielpolak.ticket;
 
-import com.gabrielpolak.ticket.Model.DAO.Movie;
-import com.gabrielpolak.ticket.Model.DAO.Reservation;
-import com.gabrielpolak.ticket.Model.DAO.Screening;
-import com.gabrielpolak.ticket.Model.DAO.Ticket;
+import com.gabrielpolak.ticket.Model.DAO.*;
 import com.gabrielpolak.ticket.Repository.MovieRepository;
 import com.gabrielpolak.ticket.Repository.ReservationRepository;
 import com.gabrielpolak.ticket.Repository.ScreeningRepository;
@@ -28,6 +25,10 @@ public class DataConfig {
             Movie dallas = Movie.CreateMovieWithTitle("Dallas Buyers Club");
             Movie fight = Movie.CreateMovieWithTitle("Fight Club");
 
+            Room room1 = Room.CreateRoom();
+            Room room2 = Room.CreateRoom();
+            Room room3 = Room.CreateRoom();
+
 //            Ticket ticket1 = Ticket.CreateNewTicket(TicketType.Adult);
 //            Ticket ticket2 = Ticket.CreateNewTicket(TicketType.Student);
 
@@ -36,10 +37,10 @@ public class DataConfig {
 //            ));
 
             screeningRepository.saveAll(List.of(
-                    Screening.CreateScreening(interstellar, LocalDateTime.of( 2022 , 2 , 11 , 12, 30)),
-                    Screening.CreateScreening(dzienSwira, LocalDateTime.of( 2022 , 2 , 11 , 12, 30)),
-                    Screening.CreateScreening(dallas, LocalDateTime.of( 2022 , 2 , 11 , 12, 30)),
-                    Screening.CreateScreening(fight, LocalDateTime.of( 2022 , 2 , 11 , 12, 30))
+                    Screening.CreateScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room1),
+                    Screening.CreateScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room2),
+                    Screening.CreateScreeningWithRoom(dallas, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room3),
+                    Screening.CreateScreeningWithRoom(fight, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room3)
             ));
 
             reservationRepository.saveAll(List.of(
