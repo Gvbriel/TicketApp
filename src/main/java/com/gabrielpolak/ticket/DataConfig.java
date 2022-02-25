@@ -1,10 +1,7 @@
 package com.gabrielpolak.ticket;
 
 import com.gabrielpolak.ticket.Model.DAO.*;
-import com.gabrielpolak.ticket.Repository.MovieRepository;
-import com.gabrielpolak.ticket.Repository.ReservationRepository;
-import com.gabrielpolak.ticket.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Repository.TicketRepository;
+import com.gabrielpolak.ticket.Repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +15,7 @@ import java.util.List;
 public class DataConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(MovieRepository movieRepository, ScreeningRepository screeningRepository, TicketRepository ticketRepository, ReservationRepository reservationRepository){
+    CommandLineRunner commandLineRunner(MovieRepository movieRepository, ScreeningRepository screeningRepository, TicketRepository ticketRepository, ReservationRepository reservationRepository, UserRepository userRepository){
         return args -> {
             Movie interstellar = Movie.CreateMovieWithTitle("Interstellar");
             Movie dzienSwira = Movie.CreateMovieWithTitle("Dzień Świra");
@@ -29,6 +26,13 @@ public class DataConfig {
             Room room2 = Room.CreateRoom();
             Room room3 = Room.CreateRoom();
 
+            User stachu = User.CreateNewUser("Stachu", "Jones", "stachu@jones.pl");
+            User mirek = User.CreateNewUser("Mirek", "Jones", "mirek@jones.pl");
+            User andrzej = User.CreateNewUser("Andrzej", "Jones", "andrzej@jones.pl");
+
+            userRepository.saveAll(List.of(
+                    stachu, mirek, andrzej
+            ));
 //            Ticket ticket1 = Ticket.CreateNewTicket(TicketType.Adult);
 //            Ticket ticket2 = Ticket.CreateNewTicket(TicketType.Student);
 
