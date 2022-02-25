@@ -22,6 +22,19 @@ public class Screening {
     @ManyToOne(cascade = CascadeType.ALL)
     private Movie movie;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Room room;
+
+    public static Screening CreateScreeningWithRoom(Movie movie, LocalDateTime date, Room room){
+        return new Screening(movie, date, room);
+    }
+
+    public Screening(Movie movie, LocalDateTime date, Room room){
+        this.movie = movie;
+        this.date = date;
+        this.room = room;
+    }
+
     public static Screening CreateScreening(Movie movie, LocalDateTime date){
         return new Screening(movie, date);
     }
@@ -34,8 +47,6 @@ public class Screening {
     public Screening(){
 
     }
-
-
 
     public void removeTickets(int amount){
         int pom = this.tickets;

@@ -28,18 +28,19 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Reservation createReservation(Long screening_id, TicketRequest ticketRequest, String email) {
+    public Reservation createReservation(Long screening_id, List<TicketRequest> ticketRequest, String email) {
         Screening screening = screeningRepository.findById(screening_id)
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
-        List<Ticket> ticketList = new ArrayList<>();
+        List<Ticket> ticketList = Ticket.CreateMultipleTickets(ticketRequest, screening);
 
-        for(int i = 0; i <= ticketRequest.getType().length-1; i++){
-            for(int j = 0; j < ticketRequest.getAmount()[i]; j++){
-                ticketList.add(Ticket.CreateNewTicket(ticketRequest.getType()[i], screening));
-            }
-        }
 
+//        for(int i = 0; i <= ticketRequest.getType().length-1; i++){
+//            for(int j = 0; j < ticketRequest.getAmount()[i]; j++){
+//                ticketList.add(Ticket.CreateNewTicket(ticketRequest.getType()[i], screening));
+//            }
+//        }
+//
         screening.removeTickets(ticketList.size());
         screeningRepository.save(screening);
 
