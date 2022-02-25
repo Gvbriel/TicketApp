@@ -1,10 +1,13 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.gabrielpolak.ticket.Model.Request.TicketRequest;
 import com.gabrielpolak.ticket.TicketType;
 import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -46,5 +49,17 @@ public class Ticket {
             }
         }
         return 0;
+    }
+
+    public static List<Ticket> CreateMultipleTickets(List<TicketRequest> ticketRequests, Screening screening){
+        List<Ticket> ticketList = new ArrayList<>();
+
+        for(TicketRequest request: ticketRequests){
+            for(int i = 0; i < request.getAmount(); i++){
+                ticketList.add(Ticket.CreateNewTicket(request.getType(), screening));
+            }
+        }
+
+        return ticketList;
     }
 }

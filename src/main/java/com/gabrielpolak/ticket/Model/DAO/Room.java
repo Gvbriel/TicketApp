@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,5 +18,13 @@ public class Room {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Screening> screenings = new ArrayList<>();
+
+    public static Room CreateRoom(){
+        return new Room();
+    }
+
+    public Room(){
+
+    }
 
 }
