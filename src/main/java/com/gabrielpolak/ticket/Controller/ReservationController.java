@@ -1,7 +1,9 @@
 package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
+import com.gabrielpolak.ticket.Model.DTO.ReservationDTO;
 import com.gabrielpolak.ticket.Model.DTO.TicketDTO;
+import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
 import com.gabrielpolak.ticket.Service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,11 @@ public class ReservationController {
         return reservationService.getReservations();
     }
 
-    //TODO user name and surname passed, preffered as a object UserRequest
     @PostMapping
     public Reservation createReservation(
             @RequestParam Long screening_id,
-            @RequestBody TicketDTO tickets,
-            @RequestParam String email
+            @RequestBody ReservationDTO reservationDTO
     ){
-        return reservationService.createReservation(screening_id, tickets.getTickets(), email);
+        return reservationService.createReservation(screening_id, reservationDTO.getTickets(), reservationDTO.getUser());
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.gabrielpolak.ticket.Model.DAO.Movie;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -26,6 +26,10 @@ public class Reservation {
 
     private String reservationEmail;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Reservation() {
 
     }
@@ -41,6 +45,16 @@ public class Reservation {
 
     public static Reservation CreateNewReservation(List<Ticket> tickets, Screening screening, String reservationEmail){
         return new Reservation(tickets, screening, reservationEmail);
+    }
+
+    public static Reservation CreateNewReservationWithUser(List<Ticket> tickets, Screening screening, User user){
+        return new Reservation(tickets, screening, user);
+    }
+
+    public Reservation(List<Ticket> tickets, Screening screening, User user) {
+        this.tickets = tickets;
+        this.screening = screening;
+        this.user = user;
     }
 
     public Reservation(List<Ticket> tickets, Screening screening, String reservationEmail) {
