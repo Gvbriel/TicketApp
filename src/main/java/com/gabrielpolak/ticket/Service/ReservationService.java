@@ -12,6 +12,7 @@ import com.gabrielpolak.ticket.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,10 @@ public class ReservationService {
         Screening screening = screeningRepository.findById(screening_id)
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
+        if(!LocalDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
+            throw new RuntimeException("It's too late to make reservation right now.");
+        }
+
         List<Ticket> ticketList = Ticket.CreateMultipleTickets(ticketRequest, screening);
 
         User user;
@@ -53,7 +58,7 @@ public class ReservationService {
         screening.removeTickets(ticketList.size());
         screeningRepository.save(screening);
 
-        Reservation reservation = Reservation.CreateNewReservationWithUser(ticketList, screening, user);
+        Reservation reservation = Reservation.CreateNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
         reservationRepository.save(reservation);
 
         return reservation;

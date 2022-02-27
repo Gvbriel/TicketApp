@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,8 @@ public class Reservation {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private LocalDateTime expirationTime;
+
     public Reservation() {
 
     }
@@ -49,6 +52,17 @@ public class Reservation {
 
     public static Reservation CreateNewReservationWithUser(List<Ticket> tickets, Screening screening, User user){
         return new Reservation(tickets, screening, user);
+    }
+
+    public static Reservation CreateNewReservationWithUserAndExpirationTime(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime){
+        return new Reservation(tickets, screening, user, expirationTime);
+    }
+
+    public Reservation(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime) {
+        this.tickets = tickets;
+        this.screening = screening;
+        this.user = user;
+        this.expirationTime = expirationTime;
     }
 
     public Reservation(List<Ticket> tickets, Screening screening, User user) {

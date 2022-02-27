@@ -1,9 +1,12 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -14,6 +17,7 @@ public class Screening {
     private Long id;
 
     @Column(columnDefinition = "TIMESTAMP")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
 
     @Column(name = "tickets")
@@ -56,4 +60,5 @@ public class Screening {
         }
         this.tickets -= amount;
     }
+
 }
