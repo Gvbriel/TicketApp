@@ -23,15 +23,8 @@ public class ScreeningController {
     }
 
     @GetMapping
-    public List<Screening> getScreenings(
-            @RequestParam(value = "date", required = false) LocalDateTime date
-    ){
-        return screeningService.getScreenings(date);
-    }
-
-    @GetMapping("/day")
     public List<Screening> getDayScreenings(
-            @RequestParam(value = "date") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime date
+            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime date
     ){
         return screeningService.getDayScreenings(date);
     }
