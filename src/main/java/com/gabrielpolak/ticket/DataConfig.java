@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class DataConfig {
             userRepository.saveAll(List.of(
                     stachu, mirek, andrzej
             ));
+
 //            Ticket ticket1 = Ticket.CreateNewTicket(TicketType.Adult);
 //            Ticket ticket2 = Ticket.CreateNewTicket(TicketType.Student);
 
@@ -41,13 +44,14 @@ public class DataConfig {
 //            ));
 
             screeningRepository.saveAll(List.of(
-                    Screening.CreateScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room1),
-                    Screening.CreateScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room2),
+                    Screening.CreateScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 27 , 11, 20), room1),
+                    Screening.CreateScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 27 , 12, 30), room2),
                     Screening.CreateScreeningWithRoom(dallas, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room3),
-                    Screening.CreateScreeningWithRoom(fight, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room3)
+                    Screening.CreateScreeningWithRoom(fight, LocalDateTime.of( 2022 , 2 , 15 , 12, 30), room3)
             ));
 
             reservationRepository.saveAll(List.of(
+
             ));
 
         };

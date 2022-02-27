@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +24,24 @@ public class ScreeningController {
 
     @GetMapping
     public List<Screening> getScreenings(
-            @RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date dateTime
+            @RequestParam(value = "date", required = false) LocalDateTime date
     ){
-        return screeningService.getScreenings();
+        return screeningService.getScreenings(date);
+    }
+
+    @GetMapping("/day")
+    public List<Screening> getDayScreenings(
+            @RequestParam(value = "date") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime date
+    ){
+        return screeningService.getDayScreenings(date);
+    }
+
+    @GetMapping("/between")
+    public List<Screening> getScreeningsBetween(
+            @RequestParam(value = "from") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime from,
+            @RequestParam(value = "to") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime to)
+    {
+        return screeningService.getScreeningsBetween(from, to);
     }
 
 }

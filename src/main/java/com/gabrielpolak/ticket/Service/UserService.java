@@ -17,13 +17,8 @@ public class UserService {
     }
 
     public User createNewUser(UserDTO userDTO){
-        User user = User.CreateDefaultUser();
-        user.setEmail(userDTO.getEmail());
-        user.setName(userDTO.getName());
-        user.setSurname(userDTO.getSurname());
-
+        User user = userDTO.from(userDTO);
         userRepository.save(user);
-
         return user;
     }
 }

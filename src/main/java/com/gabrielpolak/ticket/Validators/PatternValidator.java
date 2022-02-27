@@ -10,7 +10,7 @@ public class PatternValidator {
     }
 
     public static boolean validateSurname(String surname){
-        String pattern = "(?=\\S*[-])([a-zA-Z'-]+){3,}";
+        String pattern = "^[A-Z].{3,}";
         return patternMatches(surname, pattern);
     }
 

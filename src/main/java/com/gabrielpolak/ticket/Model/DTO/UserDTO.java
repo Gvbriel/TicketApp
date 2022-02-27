@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Model.DTO;
 
+import com.gabrielpolak.ticket.Model.DAO.User;
 import lombok.Data;
 
 @Data
@@ -31,5 +32,14 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User from(UserDTO userDTO){
+        User user = User.CreateDefaultUser();
+        user.setEmail(userDTO.getEmail());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+
+        return user;
     }
 }
