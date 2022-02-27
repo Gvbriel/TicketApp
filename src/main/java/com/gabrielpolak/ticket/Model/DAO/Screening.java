@@ -1,6 +1,7 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,6 +30,9 @@ public class Screening {
     @ManyToOne(cascade = CascadeType.ALL)
     private Room room;
 
+    @JsonIgnore
+    private String movietitle;
+
     public static Screening CreateScreeningWithRoom(Movie movie, LocalDateTime date, Room room){
         return new Screening(movie, date, room);
     }
@@ -37,6 +41,7 @@ public class Screening {
         this.movie = movie;
         this.date = date;
         this.room = room;
+        this.movietitle = movie.getTitle();
     }
 
     public static Screening CreateScreening(Movie movie, LocalDateTime date){

@@ -44,10 +44,10 @@ public class DataConfig {
 //            ));
 
             screeningRepository.saveAll(List.of(
-                    Screening.CreateScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 27 , 11, 20), room1),
-                    Screening.CreateScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 27 , 12, 30), room2),
-                    Screening.CreateScreeningWithRoom(dallas, LocalDateTime.of( 2022 , 2 , 11 , 12, 30), room3),
-                    Screening.CreateScreeningWithRoom(fight, LocalDateTime.of( 2022 , 2 , 15 , 12, 30), room3)
+                    Screening.CreateScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 28 , 11, 20), room1),
+                    Screening.CreateScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 28 , 12, 30), room2),
+                    Screening.CreateScreeningWithRoom(dallas, LocalDateTime.of( 2022 , 3 , 11 , 12, 30), room3),
+                    Screening.CreateScreeningWithRoom(fight, LocalDateTime.of( 2022 , 3 , 15 , 12, 30), room3)
             ));
 
             reservationRepository.saveAll(List.of(
