@@ -7,12 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/screening")
+@RequestMapping("/api/v1/screening")
 public class ScreeningController {
 
     private final ScreeningService screeningService;

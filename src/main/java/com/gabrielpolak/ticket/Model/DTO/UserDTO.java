@@ -35,7 +35,7 @@ public class UserDTO {
     }
 
     public User from(UserDTO userDTO){
-        User user = User.CreateDefaultUser();
+        User user = User.createDefaultUser();
         user.setEmail(userDTO.getEmail());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());

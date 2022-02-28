@@ -6,12 +6,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 @Data
 @Entity
-@Table
 public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +30,7 @@ public class Screening {
     @JsonIgnore
     private String movietitle;
 
-    public static Screening CreateScreeningWithRoom(Movie movie, LocalDateTime date, Room room){
+    public static Screening createScreeningWithRoom(Movie movie, LocalDateTime date, Room room){
         return new Screening(movie, date, room);
     }
 
@@ -42,10 +39,6 @@ public class Screening {
         this.date = date;
         this.room = room;
         this.movietitle = movie.getTitle();
-    }
-
-    public static Screening CreateScreening(Movie movie, LocalDateTime date){
-        return new Screening(movie, date);
     }
 
     public Screening(Movie movie, LocalDateTime date){

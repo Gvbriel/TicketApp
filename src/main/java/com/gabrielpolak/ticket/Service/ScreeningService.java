@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Service;
 
+import com.gabrielpolak.ticket.Helpers.DateHelper;
 import com.gabrielpolak.ticket.Model.DAO.Screening;
 import com.gabrielpolak.ticket.Repository.ScreeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,11 @@ public class ScreeningService {
         if(dateTime == null){
             return screeningRepository.findByOrderByDateAscMovietitleAsc();
         }else{
-            LocalDateTime dayStart = dateTime.withHour(0).withMinute(0).withSecond(0);
-            LocalDateTime dayEnd = dateTime.withHour(23).withMinute(59).withSecond(59);
-            return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(dayStart, dayEnd);
+            return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(DateHelper.getDayStart(dateTime), DateHelper.getDayEnd(dateTime));
         }
     }
 
     public List<Screening> getScreeningsBetween(LocalDateTime from, LocalDateTime to) {
-        LocalDateTime fromLDT = from.withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime toLDT = to.withHour(23).withMinute(59).withSecond(59);
-        return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(fromLDT, toLDT);
+        return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(DateHelper.getDayStart(from), DateHelper.getDayEnd(to));
     }
 }

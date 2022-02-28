@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Entity
-@Table
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,24 +36,8 @@ public class Reservation {
 
     }
 
-    public static Reservation CreateNewReservationWithoutTickets(Screening screening, String reservationEmail){
-        return new Reservation(screening, reservationEmail);
-    }
 
-    public Reservation(Screening screening, String reservationEmail){
-        this.screening = screening;
-        this.reservationEmail = reservationEmail;
-    }
-
-    public static Reservation CreateNewReservation(List<Ticket> tickets, Screening screening, String reservationEmail){
-        return new Reservation(tickets, screening, reservationEmail);
-    }
-
-    public static Reservation CreateNewReservationWithUser(List<Ticket> tickets, Screening screening, User user){
-        return new Reservation(tickets, screening, user);
-    }
-
-    public static Reservation CreateNewReservationWithUserAndExpirationTime(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime){
+    public static Reservation createNewReservationWithUserAndExpirationTime(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime){
         return new Reservation(tickets, screening, user, expirationTime);
     }
 
@@ -65,22 +48,10 @@ public class Reservation {
         this.expirationTime = expirationTime;
     }
 
-    public Reservation(List<Ticket> tickets, Screening screening, User user) {
-        this.tickets = tickets;
-        this.screening = screening;
-        this.user = user;
-    }
-
-    public Reservation(List<Ticket> tickets, Screening screening, String reservationEmail) {
-        this.tickets = tickets;
-        this.screening = screening;
-        this.reservationEmail = reservationEmail;
-    }
-
-    public double getTicketsPrice(){
-        double price = 0;
+    public BigDecimal getTicketsPrice(){
+        BigDecimal price = new BigDecimal(0);
         for(Ticket ticket : tickets){
-            price += ticket.getPrice();
+            price = price.add(ticket.getPrice());
         }
         return price;
     }

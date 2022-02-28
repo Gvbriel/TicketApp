@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -36,15 +35,15 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Reservation createReservation(Long screening_id, List<TicketRequest> ticketRequest, UserDTO userDTO) {
-        Screening screening = screeningRepository.findById(screening_id)
+    public Reservation createReservation(Long screeningId, List<TicketRequest> ticketRequest, UserDTO userDTO) {
+        Screening screening = screeningRepository.findById(screeningId)
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
         if(!LocalDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
             throw new RuntimeException("It's too late to make reservation right now.");
         }
 
-        List<Ticket> ticketList = Ticket.CreateMultipleTickets(ticketRequest, screening);
+        List<Ticket> ticketList = Ticket.createMultipleTickets(ticketRequest, screening);
 
         User user;
 
@@ -58,7 +57,7 @@ public class ReservationService {
         screening.removeTickets(ticketList.size());
         screeningRepository.save(screening);
 
-        Reservation reservation = Reservation.CreateNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
+        Reservation reservation = Reservation.createNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
         reservationRepository.save(reservation);
 
         return reservation;

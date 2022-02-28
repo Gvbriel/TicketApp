@@ -8,6 +8,7 @@ class TicketApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
