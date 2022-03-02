@@ -20,21 +20,17 @@ public class Ticket {
     private BigDecimal price;
     private TicketType type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Screening screening;
-
     public Ticket() {
 
     }
 
-    public static Ticket createNewTicket(TicketType type, Screening screening){
-        return new Ticket(type, screening);
+    public static Ticket createNewTicket(TicketType type){
+        return new Ticket(type);
     }
 
-    public Ticket(TicketType type, Screening screening){
+    public Ticket(TicketType type){
         this.type = type;
         this.price = getTicketPrice(type);
-        this.screening = screening;
     }
 
     private BigDecimal getTicketPrice(TicketType type){
@@ -53,15 +49,16 @@ public class Ticket {
         return new BigDecimal(0);
     }
 
-    public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests, Screening screening){
+    public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests){
         List<Ticket> ticketList = new ArrayList<>();
 
         for(TicketRequest request: ticketRequests){
             for(int i = 0; i < request.getAmount(); i++){
-                ticketList.add(Ticket.createNewTicket(request.getType(), screening));
+                ticketList.add(Ticket.createNewTicket(request.getType()));
             }
         }
 
         return ticketList;
     }
+
 }

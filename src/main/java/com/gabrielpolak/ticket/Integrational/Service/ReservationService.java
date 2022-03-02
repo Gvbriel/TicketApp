@@ -1,4 +1,4 @@
-package com.gabrielpolak.ticket.Service;
+package com.gabrielpolak.ticket.Integrational.Service;
 
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
 import com.gabrielpolak.ticket.Model.DAO.Screening;
@@ -6,13 +6,13 @@ import com.gabrielpolak.ticket.Model.DAO.Ticket;
 import com.gabrielpolak.ticket.Model.DAO.User;
 import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
-import com.gabrielpolak.ticket.Repository.ReservationRepository;
-import com.gabrielpolak.ticket.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Repository.UserRepository;
+import com.gabrielpolak.ticket.Integrational.Repository.ReservationRepository;
+import com.gabrielpolak.ticket.Integrational.Repository.ScreeningRepository;
+import com.gabrielpolak.ticket.Integrational.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -39,11 +39,11 @@ public class ReservationService {
         Screening screening = screeningRepository.findById(screeningId)
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
-        if(!LocalDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
+        if(!ZonedDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
             throw new RuntimeException("It's too late to make reservation right now.");
         }
 
-        List<Ticket> ticketList = Ticket.createMultipleTickets(ticketRequest, screening);
+        List<Ticket> ticketList = Ticket.createMultipleTickets(ticketRequest);
 
         User user;
 
@@ -58,6 +58,7 @@ public class ReservationService {
         screeningRepository.save(screening);
 
         Reservation reservation = Reservation.createNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
+
         reservationRepository.save(reservation);
 
         return reservation;

@@ -1,4 +1,4 @@
-package com.gabrielpolak.ticket;
+package com.gabrielpolak.ticket.Integrational;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

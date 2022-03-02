@@ -9,6 +9,11 @@ import java.util.List;
 public class ReservationDTO {
     private List<TicketRequest> tickets;
     private UserDTO user;
+    private Long screeningId;
+
+    public Long getScreeningId() {
+        return screeningId;
+    }
 
     public List<TicketRequest> getTickets(){
         return tickets;

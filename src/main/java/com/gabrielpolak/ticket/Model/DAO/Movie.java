@@ -1,8 +1,10 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    @NotBlank
     private String title;
 
     @OneToMany

@@ -1,8 +1,7 @@
-package com.gabrielpolak.ticket.Service;
+package com.gabrielpolak.ticket.Integrational.Service;
 
 import com.gabrielpolak.ticket.Model.DAO.Movie;
-import com.gabrielpolak.ticket.Repository.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gabrielpolak.ticket.Integrational.Repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    @Autowired
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }

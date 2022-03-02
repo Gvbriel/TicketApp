@@ -5,12 +5,12 @@ import java.util.regex.Pattern;
 public class PatternValidator {
 
     public static boolean validateName(String name){
-        String pattern = "^[A-Z].{3,}";
+        String pattern = "[A-Za-z]{3,}";
         return patternMatches(name, pattern);
     }
 
     public static boolean validateSurname(String surname){
-        String pattern = "^[A-Z].{3,}";
+        String pattern = "([A-Za-z]{3,})|([A-Za-z]{3,}-[A-Za-z]{3,})";
         return patternMatches(surname, pattern);
     }
 

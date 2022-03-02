@@ -1,17 +1,20 @@
 package com.gabrielpolak.ticket;
 
 import com.gabrielpolak.ticket.Model.DAO.*;
-import com.gabrielpolak.ticket.Repository.*;
+import com.gabrielpolak.ticket.Integrational.Repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Configuration
 public class DataConfig {
-
+    DateTimeFormatter formatter
+            = DateTimeFormatter
+            .ISO_ZONED_DATE_TIME;
     @Bean
     CommandLineRunner commandLineRunner(MovieRepository movieRepository, ScreeningRepository screeningRepository, TicketRepository ticketRepository, ReservationRepository reservationRepository, UserRepository userRepository){
         return args -> {
@@ -40,10 +43,10 @@ public class DataConfig {
 //            ));
 
             screeningRepository.saveAll(List.of(
-                    Screening.createScreeningWithRoom(interstellar, LocalDateTime.of( 2022 , 2 , 28 , 11, 20), room1),
-                    Screening.createScreeningWithRoom(dzienSwira, LocalDateTime.of( 2022 , 2 , 28 , 12, 30), room2),
-                    Screening.createScreeningWithRoom(dallas, LocalDateTime.of( 2022 , 3 , 11 , 12, 30), room3),
-                    Screening.createScreeningWithRoom(fight, LocalDateTime.of( 2022 , 3 , 15 , 12, 30), room3)
+                    Screening.createScreeningWithRoom(interstellar, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room1),
+                    Screening.createScreeningWithRoom(dzienSwira, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room2),
+                    Screening.createScreeningWithRoom(dallas, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3),
+                    Screening.createScreeningWithRoom(fight, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3)
             ));
 
             reservationRepository.saveAll(List.of(

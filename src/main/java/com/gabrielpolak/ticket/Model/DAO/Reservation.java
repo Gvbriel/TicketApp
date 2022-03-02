@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +16,13 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    //TODO przekazany obiekt zmienic na jsona
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "reservation_id")
     @JsonIgnoreProperties("screening")
     private List<Ticket> tickets = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "screening_id")
     private Screening screening;
 
     private String reservationEmail;
@@ -30,22 +31,24 @@ public class Reservation {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime expirationTime;
+    private ZonedDateTime expirationTime;
+
+    private BigDecimal ticketsPrice;
 
     public Reservation() {
 
     }
 
-
-    public static Reservation createNewReservationWithUserAndExpirationTime(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime){
+    public static Reservation createNewReservationWithUserAndExpirationTime(List<Ticket> tickets, Screening screening, User user, ZonedDateTime expirationTime){
         return new Reservation(tickets, screening, user, expirationTime);
     }
 
-    public Reservation(List<Ticket> tickets, Screening screening, User user, LocalDateTime expirationTime) {
+    public Reservation(List<Ticket> tickets, Screening screening, User user, ZonedDateTime expirationTime) {
         this.tickets = tickets;
         this.screening = screening;
         this.user = user;
         this.expirationTime = expirationTime;
+        this.ticketsPrice = getTicketsPrice();
     }
 
     public BigDecimal getTicketsPrice(){

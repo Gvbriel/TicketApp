@@ -1,4 +1,4 @@
-package com.gabrielpolak.ticket.Repository;
+package com.gabrielpolak.ticket.Integrational.Repository;
 
 import com.gabrielpolak.ticket.Model.DAO.User;
 import org.springframework.data.jpa.repository.JpaRepository;
