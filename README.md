@@ -49,7 +49,7 @@ is a link to make reservation. In RequestBody we pass tickets objects, screening
 ```javascript
 {
    "screeningId": 10,
-           "tickets": [
+   "tickets": [
       {
          "type": "Adult",
          "amount": 2
@@ -63,11 +63,11 @@ is a link to make reservation. In RequestBody we pass tickets objects, screening
          "amount": 2
       }
    ],
-           "user":
+   "user":
    {
       "name": "Gabriel",
-           "surname": "Stachu",
-           "email": "gabriel@jones.pl"
+      "surname": "Stachu",
+      "email": "gabriel@jones.pl"
    }
 }
 

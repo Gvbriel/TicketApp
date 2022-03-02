@@ -1,4 +1,4 @@
-package com.gabrielpolak.ticket.Integrational.Repository;
+package com.gabrielpolak.ticket.Repository;
 
 import com.gabrielpolak.ticket.Model.DAO.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;

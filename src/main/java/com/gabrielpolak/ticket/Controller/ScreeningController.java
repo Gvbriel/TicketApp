@@ -1,7 +1,7 @@
-package com.gabrielpolak.ticket.Integrational.Controller;
+package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.Screening;
-import com.gabrielpolak.ticket.Integrational.Service.ScreeningService;
+import com.gabrielpolak.ticket.Service.ScreeningService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 

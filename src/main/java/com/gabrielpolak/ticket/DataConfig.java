@@ -1,7 +1,7 @@
 package com.gabrielpolak.ticket;
 
 import com.gabrielpolak.ticket.Model.DAO.*;
-import com.gabrielpolak.ticket.Integrational.Repository.*;
+import com.gabrielpolak.ticket.Repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
-package com.gabrielpolak.ticket.Integrational.Controller;
+package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.Movie;
-import com.gabrielpolak.ticket.Integrational.Service.MovieService;
+import com.gabrielpolak.ticket.Service.MovieService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

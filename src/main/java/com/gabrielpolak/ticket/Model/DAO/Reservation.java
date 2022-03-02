@@ -35,6 +35,8 @@ public class Reservation {
 
     private BigDecimal ticketsPrice;
 
+    private boolean confirmed;
+
     public Reservation() {
 
     }
@@ -49,6 +51,7 @@ public class Reservation {
         this.user = user;
         this.expirationTime = expirationTime;
         this.ticketsPrice = getTicketsPrice();
+        this.confirmed = false;
     }
 
     public BigDecimal getTicketsPrice(){

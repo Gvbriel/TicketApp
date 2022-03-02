@@ -1,4 +1,4 @@
-package com.gabrielpolak.ticket.Integrational.Service;
+package com.gabrielpolak.ticket.Service;
 
 
 import org.springframework.boot.test.context.SpringBootTest;

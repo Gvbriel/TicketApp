@@ -1,8 +1,8 @@
-package com.gabrielpolak.ticket.Integrational.Controller;
+package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
 import com.gabrielpolak.ticket.Model.DTO.ReservationDTO;
-import com.gabrielpolak.ticket.Integrational.Service.ReservationService;
+import com.gabrielpolak.ticket.Service.ReservationService;
 import com.gabrielpolak.ticket.TicketProperties;
 import org.springframework.web.bind.annotation.*;
 

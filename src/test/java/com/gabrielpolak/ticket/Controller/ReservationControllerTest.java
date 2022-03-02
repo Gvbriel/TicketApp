@@ -1,12 +1,12 @@
-package com.gabrielpolak.ticket.Integrational.Controller;
+package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.*;
 import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
-import com.gabrielpolak.ticket.Integrational.Repository.ReservationRepository;
-import com.gabrielpolak.ticket.Integrational.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Integrational.Service.ReservationService;
-import com.gabrielpolak.ticket.Integrational.Service.ScreeningService;
+import com.gabrielpolak.ticket.Repository.ReservationRepository;
+import com.gabrielpolak.ticket.Repository.ScreeningRepository;
+import com.gabrielpolak.ticket.Service.ReservationService;
+import com.gabrielpolak.ticket.Service.ScreeningService;
 import com.gabrielpolak.ticket.TicketType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +50,7 @@ public class ReservationControllerTest {
         userDTO.setSurname("Polak-Jablonski");
 
         Reservation reservation = reservationService.createReservation(screening.getId(), ticketRequestList, userDTO);
+
         assertThat(reservationRepository.findById(reservation.getId()).isPresent()).isTrue();
     }
 }

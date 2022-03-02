@@ -1,8 +1,8 @@
-package com.gabrielpolak.ticket.Integrational.Service;
+package com.gabrielpolak.ticket.Service;
 
 import com.gabrielpolak.ticket.Helpers.DateHelper;
 import com.gabrielpolak.ticket.Model.DAO.Screening;
-import com.gabrielpolak.ticket.Integrational.Repository.ScreeningRepository;
+import com.gabrielpolak.ticket.Repository.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
