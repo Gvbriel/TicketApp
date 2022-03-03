@@ -17,7 +17,6 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private BigDecimal price;
     private TicketType type;
 
     public Ticket() {
@@ -30,10 +29,9 @@ public class Ticket {
 
     public Ticket(TicketType type){
         this.type = type;
-        this.price = getTicketPrice(type);
     }
 
-    private BigDecimal getTicketPrice(TicketType type){
+    public BigDecimal getTicketPrice(){
         Map<String, String> prices = TicketProperties.getTicketPrices();
         switch (type){
             case Adult -> {

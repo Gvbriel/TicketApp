@@ -2,8 +2,11 @@ package com.gabrielpolak.ticket.Model.DAO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gabrielpolak.ticket.Exceptions.NotEnoughTicketsException;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -62,7 +65,7 @@ public class Screening {
         int pom = this.tickets;
         pom -= amount;
         if(pom < 0){
-            throw new IllegalStateException("Not enough tickets!");
+            throw new NotEnoughTicketsException("Not enough tickets!");
         }
         this.tickets -= amount;
     }

@@ -57,7 +57,7 @@ public class Reservation {
     public BigDecimal getTicketsPrice(){
         BigDecimal price = new BigDecimal(0);
         for(Ticket ticket : tickets){
-            price = price.add(ticket.getPrice());
+            price = price.add(ticket.getTicketPrice());
         }
         return price;
     }
