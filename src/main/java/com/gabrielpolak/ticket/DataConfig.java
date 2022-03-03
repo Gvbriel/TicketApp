@@ -42,12 +42,12 @@ public class DataConfig {
 //                interstellar, dzienSwira, dallas, fight
 //            ));
 
-            screeningRepository.saveAll(List.of(
-                    Screening.createScreeningWithRoom(interstellar, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room1),
-                    Screening.createScreeningWithRoom(dzienSwira, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room2),
-                    Screening.createScreeningWithRoom(dallas, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3),
-                    Screening.createScreeningWithRoom(fight, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3)
-            ));
+//            screeningRepository.saveAll(List.of(
+//                    Screening.createScreeningWithRoom(interstellar, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room1),
+//                    Screening.createScreeningWithRoom(dzienSwira, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room2),
+//                    Screening.createScreeningWithRoom(dallas, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3),
+//                    Screening.createScreeningWithRoom(fight, ZonedDateTime.parse("2022-12-16T20:28:33.213+05:30", formatter), room3)
+//            ));
 
             reservationRepository.saveAll(List.of(
 
