@@ -1,0 +1,4 @@
+ticket-prices:
+  CHILD: '12.50'
+  ADULT: '25'
+  STUDENT: '18'
