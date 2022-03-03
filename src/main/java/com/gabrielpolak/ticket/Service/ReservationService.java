@@ -10,10 +10,11 @@ import com.gabrielpolak.ticket.Repository.ReservationRepository;
 import com.gabrielpolak.ticket.Repository.ScreeningRepository;
 import com.gabrielpolak.ticket.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -22,24 +23,31 @@ public class ReservationService {
     private final ScreeningRepository screeningRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, ScreeningRepository screeningRepository, UserRepository userRepository, UserService userService) {
+    public ReservationService(ReservationRepository reservationRepository, ScreeningRepository screeningRepository, UserRepository userRepository, UserService userService, ApplicationEventPublisher eventPublisher) {
         this.reservationRepository = reservationRepository;
         this.screeningRepository = screeningRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<Reservation> getReservations() {
         return reservationRepository.findAll();
     }
 
-    public Reservation createReservation(Long screening_id, List<TicketRequest> ticketRequest, UserDTO userDTO) {
-        Screening screening = screeningRepository.findById(screening_id)
+    public Reservation createReservation(Long screeningId, List<TicketRequest> ticketRequest, UserDTO userDTO) {
+        Screening screening = screeningRepository.findById(screeningId)
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
-        List<Ticket> ticketList = Ticket.CreateMultipleTickets(ticketRequest, screening);
+        if(!ZonedDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
+            throw new RuntimeException("It's too late to make reservation right now.");
+        }
+
+        List<Ticket> ticketList = Ticket.createMultipleTickets(ticketRequest);
 
         User user;
 
@@ -53,8 +61,10 @@ public class ReservationService {
         screening.removeTickets(ticketList.size());
         screeningRepository.save(screening);
 
-        Reservation reservation = Reservation.CreateNewReservationWithUser(ticketList, screening, user);
+        Reservation reservation = Reservation.createNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
+
         reservationRepository.save(reservation);
+
 
         return reservation;
     }

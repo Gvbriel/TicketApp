@@ -21,11 +21,11 @@ public class User {
     @OneToMany
     private List<Reservation> reservationList;
 
-    public static User CreateNewUser(String name, String surname, String email){
+    public static User createNewUser(String name, String surname, String email){
         return new User(name, surname, email);
     }
 
-    public static User CreateDefaultUser(){
+    public static User createDefaultUser(){
         return new User();
     }
 

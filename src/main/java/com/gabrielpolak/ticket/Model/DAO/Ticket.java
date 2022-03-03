@@ -1,65 +1,64 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
+import com.gabrielpolak.ticket.TicketProperties;
 import com.gabrielpolak.ticket.TicketType;
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
-@Table
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private double price;
+    private BigDecimal price;
     private TicketType type;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Screening screening;
 
     public Ticket() {
 
     }
 
-    public static Ticket CreateNewTicket(TicketType type, Screening screening){
-        return new Ticket(type, screening);
+    public static Ticket createNewTicket(TicketType type){
+        return new Ticket(type);
     }
 
-    public Ticket(TicketType type, Screening screening){
+    public Ticket(TicketType type){
         this.type = type;
         this.price = getTicketPrice(type);
-        this.screening = screening;
     }
 
-    private double getTicketPrice(TicketType type){
+    private BigDecimal getTicketPrice(TicketType type){
+        Map<String, String> prices = TicketProperties.getTicketPrices();
         switch (type){
             case Adult -> {
-                return 25;
+                return new BigDecimal(prices.get("ADULT"));
             }
             case Child -> {
-                return 12.50;
+                return new BigDecimal(prices.get("CHILD"));
             }
             case Student -> {
-                return 18;
+                return new BigDecimal(prices.get("STUDENT"));
             }
         }
-        return 0;
+        return new BigDecimal(0);
     }
 
-    public static List<Ticket> CreateMultipleTickets(List<TicketRequest> ticketRequests, Screening screening){
+    public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests){
         List<Ticket> ticketList = new ArrayList<>();
 
         for(TicketRequest request: ticketRequests){
             for(int i = 0; i < request.getAmount(); i++){
-                ticketList.add(Ticket.CreateNewTicket(request.getType(), screening));
+                ticketList.add(Ticket.createNewTicket(request.getType()));
             }
         }
 
         return ticketList;
     }
+
 }
