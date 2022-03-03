@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Service;
 
+import com.gabrielpolak.ticket.Exceptions.ReservationTimeException;
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
 import com.gabrielpolak.ticket.Model.DAO.Screening;
 import com.gabrielpolak.ticket.Model.DAO.Ticket;
@@ -44,7 +45,7 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Can't find screening."));
 
         if(!ZonedDateTime.now().isBefore(screening.getDate().minusMinutes(15))){
-            throw new RuntimeException("It's too late to make reservation right now.");
+            throw new ReservationTimeException("It's too late to make reservation right now.");
         }
 
         List<Ticket> ticketList = Ticket.createMultipleTickets(ticketRequest);

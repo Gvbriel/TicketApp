@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.gabrielpolak.ticket.Exceptions.WrongUserDataException;
 import com.gabrielpolak.ticket.Validators.PatternValidator;
 import lombok.Data;
 
@@ -43,7 +44,7 @@ public class User {
         if(PatternValidator.validateName(name)){
             this.name = name;
         }else{
-            throw new IllegalArgumentException("Name is not correct!");
+            throw new WrongUserDataException("Name is not correct!");
         }
     }
 
@@ -51,7 +52,7 @@ public class User {
         if(PatternValidator.validateSurname(surname)){
             this.surname = surname;
         }else{
-            throw new IllegalArgumentException("Surname is not correct!");
+            throw new WrongUserDataException("Surname is not correct!");
         }
     }
 
@@ -59,7 +60,7 @@ public class User {
         if(PatternValidator.validateEmail(email)){
             this.email = email;
         }else{
-            throw new IllegalArgumentException("Email is not correct!");
+            throw new WrongUserDataException("Email is not correct!");
         }
     }
 

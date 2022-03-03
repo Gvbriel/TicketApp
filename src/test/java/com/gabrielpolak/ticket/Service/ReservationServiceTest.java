@@ -39,7 +39,6 @@ public class ReservationServiceTest {
     @Autowired
     private ScreeningRepository screeningRepository;
 
-
     @Test
     void creatingNewReservationShouldReturnTrue(){
 

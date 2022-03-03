@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -50,7 +51,7 @@ public class ReservationControllerTest {
     String url = "/api/v1/reservations";
 
     @Test
-    void creatingNewReservationShouldReturn422() throws Exception {
+    void creatingNewReservationShouldReturn422AsNotEnoughTickets() throws Exception {
 
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
         screeningRepository.save(screening);
@@ -78,6 +79,37 @@ public class ReservationControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().is4xxClientError())
                         .andReturn();
+    }
+
+    @Test
+    void creatingNewReservationShouldReturn422AsTooLateToMakeReservation() throws Exception {
+
+        Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusMinutes(1), Room.createRoom());
+        screeningRepository.save(screening);
+
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("gabrielpolak@gmail.com");
+        userDTO.setName("Gabriel");
+        userDTO.setSurname("Polak-Jablonski");
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setTickets(ticketRequestList);
+        reservationDTO.setScreeningId(screening.getId());
+        reservationDTO.setUser(userDTO);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(reservationDTO))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
     }
 
     @Test
@@ -114,5 +146,68 @@ public class ReservationControllerTest {
     @Test
     void getReservationsShouldReturnTrue() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get(url)).andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void creatingNewReservationShouldCalculateRightTicketPrice() throws Exception {
+
+        Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
+        screeningRepository.save(screening);
+
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("gabrielpolak@gmail.com");
+        userDTO.setName("Gabriel");
+        userDTO.setSurname("Polak-Jablonski");
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setTickets(ticketRequestList);
+        reservationDTO.setScreeningId(screening.getId());
+        reservationDTO.setUser(userDTO);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(reservationDTO))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ticketsPrice").value(159))
+                .andReturn();
+    }
+
+    @Test
+    void creatingNewReservationShouldReturn400() throws Exception {
+
+        Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
+        screeningRepository.save(screening);
+
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("gabr@gmail.com");
+        userDTO.setName("Ga");
+        userDTO.setSurname("P");
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setTickets(ticketRequestList);
+        reservationDTO.setScreeningId(screening.getId());
+        reservationDTO.setUser(userDTO);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(reservationDTO))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
     }
 }
