@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/screening")
+@RequestMapping("/api/v1/screenings")
 public class ScreeningController {
 
     private final ScreeningService screeningService;
