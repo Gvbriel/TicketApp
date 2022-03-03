@@ -36,7 +36,7 @@ In order to check avaliable screenings, we have 3 options:
 >**/screening** 
 
 without any parameters to see all of the screenings, if we pass parameter day, we get movies for specific date.
-Format of date parameter looks like so *yyyy-MM-dd HH:mm:ss*.
+Format of date parameter looks i.e. *2022-12-16T14:30:01.001%2B05:30*.
 
 >**/screening/between**
 
@@ -44,30 +44,32 @@ gives us possibility to check screenings between specific days. Two required arg
 
 >**/reservations**
 
-is a link to make reservation. As a argument we pass *screening_id* and in RequestBody we pass tickets objects and user object, like so:
+is a link to make reservation. In RequestBody we pass tickets objects, screeningId and user object, like so:
 
 ```javascript
 {
-    "tickets": [
-    {
-        "type": "Adult",
-        "amount": 2
-    },
-    {
-        "type": "Child",
-        "amount": 3
-    },
-    {
-        "type": "Student",
-        "amount": 2
-    }
-    ],
-    "user": 
-    {
-        "name": "Name",
-        "surname": "Surname",
-        "email": "name@surname.com"
-    }
+   "screeningId": 10,
+   "tickets": [
+      {
+         "type": "Adult",
+         "amount": 2
+      },
+      {
+         "type": "Child",
+         "amount": 3
+      },
+      {
+         "type": "Student",
+         "amount": 2
+      }
+   ],
+   "user":
+   {
+      "name": "Gabriel",
+      "surname": "Stachu",
+      "email": "gabriel@jones.pl"
+   }
 }
+
 ```
 

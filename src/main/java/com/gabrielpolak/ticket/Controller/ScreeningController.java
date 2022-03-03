@@ -2,37 +2,33 @@ package com.gabrielpolak.ticket.Controller;
 
 import com.gabrielpolak.ticket.Model.DAO.Screening;
 import com.gabrielpolak.ticket.Service.ScreeningService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/screening")
+@RequestMapping("/api/v1/screening")
 public class ScreeningController {
 
     private final ScreeningService screeningService;
 
-    @Autowired
     public ScreeningController(ScreeningService screeningService) {
         this.screeningService = screeningService;
     }
 
     @GetMapping
     public List<Screening> getDayScreenings(
-            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime date
+            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime date
     ){
         return screeningService.getDayScreenings(date);
     }
 
     @GetMapping("/between")
     public List<Screening> getScreeningsBetween(
-            @RequestParam(value = "from") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime from,
-            @RequestParam(value = "to") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime to)
+            @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime from,
+            @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime to)
     {
         return screeningService.getScreeningsBetween(from, to);
     }

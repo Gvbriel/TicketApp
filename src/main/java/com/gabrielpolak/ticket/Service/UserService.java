@@ -3,7 +3,6 @@ package com.gabrielpolak.ticket.Service;
 import com.gabrielpolak.ticket.Model.DAO.User;
 import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,7 +10,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

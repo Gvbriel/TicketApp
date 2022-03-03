@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Data
@@ -18,10 +19,10 @@ public class ValidationToken {
     @JoinColumn(nullable = false, name = "screening_id")
     private Screening screening;
 
-    private LocalDateTime expiryDate;
+    private ZonedDateTime expiryDate;
 
-    private LocalDateTime calculateExpiryTime(){
-        return LocalDateTime.now().plusMinutes(30);
+    private ZonedDateTime calculateExpiryTime(){
+        return ZonedDateTime.now().plusMinutes(30);
     }
 
 }

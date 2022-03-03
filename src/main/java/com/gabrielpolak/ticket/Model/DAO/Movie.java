@@ -1,28 +1,28 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
-import com.gabrielpolak.ticket.Model.DTO.MovieDTO;
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
-@Table
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    @NotBlank
     private String title;
 
     @OneToMany
     private List<Screening> screeningList = new ArrayList<>();
 
-    public static Movie CreateMovieWithTitle(String title){
+    public static Movie createMovieWithTitle(String title){
         return new Movie(title);
     }
 
@@ -32,15 +32,4 @@ public class Movie {
 
     public Movie(){}
 
-
-//    public static Movie from(MovieDTO movieDTO){
-//        Movie movie = new Movie();
-//        movie.setTitle(movieDTO.getTitle());
-//
-//        return movie;
-//    }
-
-    public String getTitle() {
-        return title;
-    }
 }
