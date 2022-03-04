@@ -1,6 +1,5 @@
 package com.gabrielpolak.ticket.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabrielpolak.ticket.Model.DAO.Movie;
 import com.gabrielpolak.ticket.Model.DAO.Room;
@@ -8,13 +7,9 @@ import com.gabrielpolak.ticket.Model.DAO.Screening;
 import com.gabrielpolak.ticket.Model.DTO.ReservationDTO;
 import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
-import com.gabrielpolak.ticket.Repository.ReservationRepository;
 import com.gabrielpolak.ticket.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Service.ReservationService;
-import com.gabrielpolak.ticket.Service.ScreeningService;
 import com.gabrielpolak.ticket.TicketType;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,8 +21,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.RequestEntity.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,8 +69,8 @@ public class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(reservationDTO))
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().is4xxClientError())
-                        .andReturn();
+                .andExpect(status().is4xxClientError())
+                .andReturn();
     }
 
     @Test
@@ -158,4 +151,5 @@ public class ReservationControllerTest {
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }
+
 }

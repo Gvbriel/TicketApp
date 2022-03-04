@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -19,25 +18,38 @@ public class ValidationToken {
     @NotNull
     private String token;
 
-    @OneToOne(targetEntity = Screening.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "screening_id")
-    private Screening screening;
+    @OneToOne(targetEntity = Reservation.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "reservation_id")
+    private Reservation reservation;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
+
+    @NotNull
     private ZonedDateTime expiresAt;
+
     private ZonedDateTime confirmedAt;
 
     @NotNull
     private ZonedDateTime createdAt;
 
+
+
     private ZonedDateTime calculateExpiryTime(){
+
         return ZonedDateTime.now().plusMinutes(30);
     }
 
-    public ValidationToken(String token, Screening screening, ZonedDateTime expiresAt, ZonedDateTime createdAt, ZonedDateTime confirmedAt) {
+    public static ValidationToken createToken(String token, Reservation reservation, User user){
+        return new ValidationToken(token, reservation, user);
+    }
+
+    public ValidationToken(String token, Reservation reservation, User user) {
         this.token = token;
-        this.screening = screening;
-        this.expiresAt = expiresAt;
-        this.createdAt = createdAt;
-        this.confirmedAt = confirmedAt;
+        this.reservation = reservation;
+        this.expiresAt = calculateExpiryTime();
+        this.createdAt = ZonedDateTime.now();
+        this.user = user;
     }
 }

@@ -1,5 +1,6 @@
 package com.gabrielpolak.ticket.Model.DAO;
 
+import com.gabrielpolak.ticket.Exceptions.NotSupportedTicketTypeException;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
 import com.gabrielpolak.ticket.TicketProperties;
 import com.gabrielpolak.ticket.TicketType;
@@ -33,18 +34,10 @@ public class Ticket {
 
     public BigDecimal getTicketPrice(){
         Map<String, String> prices = TicketProperties.getTicketPrices();
-        switch (type){
-            case Adult -> {
-                return new BigDecimal(prices.get("ADULT"));
-            }
-            case Child -> {
-                return new BigDecimal(prices.get("CHILD"));
-            }
-            case Student -> {
-                return new BigDecimal(prices.get("STUDENT"));
-            }
+        if(prices.get(type.name()) != null){
+            return new BigDecimal(prices.get(type.name()));
         }
-        return new BigDecimal(0);
+        throw new NotSupportedTicketTypeException("Not supported type named" + type.name());
     }
 
     public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests){
