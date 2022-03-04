@@ -1,7 +1,7 @@
 package com.gabrielpolak.ticket.Service;
 
+import com.gabrielpolak.ticket.Email.EmailService;
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
-import com.gabrielpolak.ticket.Model.DAO.Screening;
 import com.gabrielpolak.ticket.Model.DAO.User;
 import com.gabrielpolak.ticket.Model.DAO.ValidationToken;
 import com.gabrielpolak.ticket.Repository.ValidationTokenRepository;
@@ -13,20 +13,25 @@ import java.util.UUID;
 public class ValidationTokenService {
 
     private final ValidationTokenRepository validationTokenRepository;
+    private final EmailService emailService;
 
-    public ValidationTokenService(ValidationTokenRepository validationTokenRepository) {
+    public ValidationTokenService(ValidationTokenRepository validationTokenRepository, EmailService emailService) {
         this.validationTokenRepository = validationTokenRepository;
+        this.emailService = emailService;
     }
 
-    public void saveValidationToken(ValidationToken token){
+    public void saveValidationToken(ValidationToken token) {
         validationTokenRepository.save(token);
     }
 
-    public void handleTokenSending(Reservation reservation, User user){
+    public void handleTokenSending(Reservation reservation, User user) {
         String tokenUUID = UUID.randomUUID().toString();
 
         ValidationToken token = ValidationToken.createToken(tokenUUID, reservation, user);
         saveValidationToken(token);
+
+        String link = "http://localhost:8080/api/v1/reservations/confirm?token=" + token.getToken();
+        emailService.send(user.getEmail(), user.getName(), link);
     }
 
 

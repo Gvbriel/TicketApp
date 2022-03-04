@@ -35,13 +35,12 @@ public class ValidationToken {
     private ZonedDateTime createdAt;
 
 
+    private ZonedDateTime calculateExpiryTime() {
 
-    private ZonedDateTime calculateExpiryTime(){
-
-        return ZonedDateTime.now().plusMinutes(30);
+        return ZonedDateTime.now().plusMinutes(15);
     }
 
-    public static ValidationToken createToken(String token, Reservation reservation, User user){
+    public static ValidationToken createToken(String token, Reservation reservation, User user) {
         return new ValidationToken(token, reservation, user);
     }
 
