@@ -25,8 +25,6 @@ public class Reservation {
     @ManyToOne
     private Screening screening;
 
-    private String reservationEmail;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

@@ -19,7 +19,7 @@ public class Movie {
     @NotBlank
     private String title;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Screening> screeningList = new ArrayList<>();
 
     public static Movie createMovieWithTitle(String title){

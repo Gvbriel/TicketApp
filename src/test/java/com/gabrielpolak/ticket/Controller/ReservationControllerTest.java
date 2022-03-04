@@ -38,17 +38,30 @@ public class ReservationControllerTest {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private ReservationController reservationController;
-    @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private ScreeningService screeningService;
-    @Autowired
     private ScreeningRepository screeningRepository;
 
+    ObjectMapper mapper = new ObjectMapper();
+
     String url = "/api/v1/reservations";
+
+
+    private ReservationDTO getReservationDTO(int amount, String email, String name, String surname, Screening screening) {
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, amount));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(email);
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setTickets(ticketRequestList);
+        reservationDTO.setScreeningId(screening.getId());
+        reservationDTO.setUser(userDTO);
+        return reservationDTO;
+    }
 
     @Test
     void creatingNewReservationShouldReturn422AsNotEnoughTickets() throws Exception {
@@ -56,22 +69,8 @@ public class ReservationControllerTest {
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
         screeningRepository.save(screening);
 
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 20));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+        ReservationDTO reservationDTO = getReservationDTO(20, "gabrielpolak@gmail.com", "Gabriel", "Polak-Jablonski", screening);
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabrielpolak@gmail.com");
-        userDTO.setName("Gabriel");
-        userDTO.setSurname("Polak-Jablonski");
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
-
-        ObjectMapper mapper = new ObjectMapper();
 
         mvc.perform(MockMvcRequestBuilders.post(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,20 +86,7 @@ public class ReservationControllerTest {
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusMinutes(1), Room.createRoom());
         screeningRepository.save(screening);
 
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabrielpolak@gmail.com");
-        userDTO.setName("Gabriel");
-        userDTO.setSurname("Polak-Jablonski");
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
+        ReservationDTO reservationDTO = getReservationDTO(2, "gabrielpolak@gmail.com", "Gabriel", "Polak-Jablonski", screening);
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -118,20 +104,7 @@ public class ReservationControllerTest {
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
         screeningRepository.save(screening);
 
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabrielpolak@gmail.com");
-        userDTO.setName("Gabriel");
-        userDTO.setSurname("Polak-Jablonski");
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
+        ReservationDTO reservationDTO = getReservationDTO(2, "gabrielpolak@gmail.com", "Gabriel", "Polak-Jablonski", screening);
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -142,6 +115,7 @@ public class ReservationControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
     }
+
 
     @Test
     void getReservationsShouldReturnTrue() throws Exception {
@@ -154,20 +128,7 @@ public class ReservationControllerTest {
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
         screeningRepository.save(screening);
 
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabrielpolak@gmail.com");
-        userDTO.setName("Gabriel");
-        userDTO.setSurname("Polak-Jablonski");
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
+        ReservationDTO reservationDTO = getReservationDTO(2, "gabrielpolak@gmail.com", "Gabriel", "Polak-Jablonski", screening);
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -181,25 +142,12 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void creatingNewReservationShouldReturn400() throws Exception {
+    void creatingNewReservationShouldReturn400WrongUserData() throws Exception {
 
         Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
         screeningRepository.save(screening);
 
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabr@gmail.com");
-        userDTO.setName("Ga");
-        userDTO.setSurname("P");
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
+        ReservationDTO reservationDTO = getReservationDTO(2, "gabr@gmail.com", "Ga", "P", screening);
 
         ObjectMapper mapper = new ObjectMapper();
 

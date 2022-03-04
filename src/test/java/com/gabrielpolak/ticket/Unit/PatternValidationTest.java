@@ -13,12 +13,12 @@ public class PatternValidationTest {
     }
 
     @Test
-    void ValidateNameShouldReturnFalse(){
+    void ValidateNameToShortShouldReturnFalse(){
         assertThat(PatternValidator.validateName("Ga")).isFalse();
     }
 
     @Test
-    void ValidateNameShouldReturnFalse2(){
+    void ValidateNameWithDashShouldReturnFalse2(){
         assertThat(PatternValidator.validateName("Ga-Da")).isFalse();
     }
 
@@ -28,12 +28,12 @@ public class PatternValidationTest {
     }
 
     @Test
-    void ValidateSurnameShouldReturnFalse(){
+    void ValidateSurnameWithDotShouldReturnFalse(){
         assertThat(PatternValidator.validateSurname("Polak-Jablonski.Es")).isFalse();
     }
 
     @Test
-    void ValidateSurnameShouldReturnFalse2(){
+    void ValidateSurnameWithTwoDashesShouldReturnFalse2(){
         assertThat(PatternValidator.validateSurname("Polak-Jablonski-Es")).isFalse();
     }
 
@@ -43,7 +43,7 @@ public class PatternValidationTest {
     }
 
     @Test
-    void ValidateEmailShouldReturnFalse(){
+    void ValidateEmailWithTwoAtShouldReturnFalse(){
         assertThat(PatternValidator.validateEmail("ga@briel@polak.pl")).isFalse();
     }
 }
