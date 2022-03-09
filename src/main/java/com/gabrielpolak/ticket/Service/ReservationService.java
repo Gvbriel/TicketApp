@@ -18,12 +18,11 @@ import java.util.List;
 
 @Service
 public class ReservationService {
-
+    
     private final ReservationRepository reservationRepository;
     private final ScreeningRepository screeningRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    private final ApplicationEventPublisher eventPublisher;
     private final ValidationTokenService validationTokenService;
     private final ValidationTokenRepository validationTokenRepository;
 
@@ -33,7 +32,6 @@ public class ReservationService {
         this.screeningRepository = screeningRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-        this.eventPublisher = eventPublisher;
         this.validationTokenService = validationTokenService;
         this.validationTokenRepository = validationTokenRepository;
     }

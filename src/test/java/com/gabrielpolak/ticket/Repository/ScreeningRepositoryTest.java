@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -24,13 +23,10 @@ class ScreeningRepositoryTest {
     private ScreeningRepository screeningRepository;
 
     @BeforeEach
-    void clear(){
+    void clear() {
         screeningRepository.deleteAll();
     }
 
-    private Screening getScreening() {
-        return Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Interstellar"), ZonedDateTime.now(), Room.createRoom());
-    }
 
     @Test
     void itShouldFindScreeningsByDate() {
@@ -39,13 +35,12 @@ class ScreeningRepositoryTest {
         Optional<Screening> foundScreening = screeningRepository.findScreeningsByDateAfterOrderByDateAscMovietitleAsc(DateHelper.getDayStart(ZonedDateTime.now())).stream().findFirst();
 
         assertAll("Should return data about screening",
-                ()->assertThat(foundScreening.isPresent()).isTrue(),
-                ()->assertEquals(foundScreening.get().getId(), screening.getId()),
-                ()->assertEquals(foundScreening.get().getDate(), screening.getDate()),
-                ()->assertEquals(foundScreening.get().getMovie().getTitle(), screening.getMovie().getTitle())
+                () -> assertThat(foundScreening.isPresent()).isTrue(),
+                () -> assertEquals(foundScreening.get().getId(), screening.getId()),
+                () -> assertEquals(foundScreening.get().getDate(), screening.getDate()),
+                () -> assertEquals(foundScreening.get().getMovie().getTitle(), screening.getMovie().getTitle())
         );
     }
-
 
     @Test
     void itShouldFindScreeningsByDateBetween() {
@@ -54,9 +49,13 @@ class ScreeningRepositoryTest {
         Optional<Screening> found = screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(DateHelper.getDayStart(ZonedDateTime.now()), DateHelper.getDayEnd(ZonedDateTime.now().plusWeeks(3))).stream().findFirst();
 
         assertAll("Should return data about screening in days between query",
-                ()->assertThat(found.isPresent()).isTrue(),
-                ()->assertEquals(screening.getId(), found.get().getId()),
-                ()->assertEquals(screening.getMovie().getTitle(), found.get().getMovie().getTitle()),
-                ()->assertEquals(screening.getDate(), found.get().getDate()));
+                () -> assertThat(found.isPresent()).isTrue(),
+                () -> assertEquals(screening.getId(), found.get().getId()),
+                () -> assertEquals(screening.getMovie().getTitle(), found.get().getMovie().getTitle()),
+                () -> assertEquals(screening.getDate(), found.get().getDate()));
+    }
+
+    private Screening getScreening() {
+        return Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Interstellar"), ZonedDateTime.now(), Room.createRoom());
     }
 }

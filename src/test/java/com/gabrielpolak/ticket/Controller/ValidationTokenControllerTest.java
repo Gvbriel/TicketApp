@@ -44,22 +44,7 @@ class ValidationTokenControllerTest {
 
     String url = "/api/v1/reservations/confirm";
 
-    private Reservation getReservation() {
-        Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), ZonedDateTime.now().plusDays(1), Room.createRoom());
-        screeningRepository.save(screening);
-
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("gabrielpolak@gmail.com");
-        userDTO.setName("Gabriel");
-        userDTO.setSurname("Polak-Jablonski");
-
-        return reservationService.createReservation(screening.getId(), ticketRequestList, userDTO);
-    }
+    private ZonedDateTime create = ZonedDateTime.now().plusDays(1);
 
     @BeforeEach
     void clear() {
@@ -70,6 +55,7 @@ class ValidationTokenControllerTest {
     void shouldReturnTrueAsTokenIsValidated() throws Exception {
         //given
         Reservation reservation = getReservation();
+        Screening screening = createScreening(create);
         ValidationToken token = validationTokenRepository.findByReservation(reservation).get();
 
         //when
@@ -79,6 +65,7 @@ class ValidationTokenControllerTest {
                 //then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("confirmed").value(true))
+                .andExpect(jsonPath("expirationTime").value(create.toLocalDateTime().minusMinutes(15).toString() + create.getOffset()))
                 .andReturn();
     }
 
@@ -98,4 +85,25 @@ class ValidationTokenControllerTest {
                 .andReturn();
     }
 
+    private Reservation getReservation() {
+        Screening screening = createScreening(create);
+
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, 2));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("gabrielpolak@gmail.com");
+        userDTO.setName("Gabriel");
+        userDTO.setSurname("Polak-Jablonski");
+
+        return reservationService.createReservation(screening.getId(), ticketRequestList, userDTO);
+    }
+
+    private Screening createScreening(ZonedDateTime create) {
+        Screening screening = Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Siema"), create, Room.createRoom());
+        screeningRepository.save(screening);
+        return screening;
+    }
 }

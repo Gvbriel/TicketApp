@@ -34,20 +34,12 @@ class ValidationTokenServiceTest {
         validationTokenRepository.deleteAll();
     }
 
-    private Screening getScreening() {
-        return Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Toy Story"), ZonedDateTime.now(), Room.createRoom());
-    }
-
-    private User getUser() {
-        return User.createNewUser("Gabriel", "Polak", "gabrielpolak@gmail.com");
-    }
-
     //TODO fix test
     @Test
     void shouldReturnTrueAsValidationTokenExistsInDatabase() {
         //given
-        Screening screening = getScreening();
-        User user = getUser();
+        Screening screening = createScreening();
+        User user = createUser();
 
         userRepository.save(user);
 
@@ -57,5 +49,15 @@ class ValidationTokenServiceTest {
 
 //        assertTrue(token.isPresent());
     }
+
+
+    private Screening createScreening() {
+        return Screening.createScreeningWithRoom(Movie.createMovieWithTitle("Toy Story"), ZonedDateTime.now(), Room.createRoom());
+    }
+
+    private User createUser() {
+        return User.createNewUser("Gabriel", "Polak", "gabrielpolak@gmail.com");
+    }
+
 
 }

@@ -27,7 +27,6 @@ public class Screening {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ZonedDateTime date;
 
-    @Column(name = "tickets")
     private int tickets;
 
     @ManyToOne(cascade = CascadeType.ALL)

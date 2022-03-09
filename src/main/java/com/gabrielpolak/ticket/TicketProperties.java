@@ -10,6 +10,7 @@ import java.util.Map;
 @EnableConfigurationProperties
 @ConfigurationProperties
 public class TicketProperties {
+    
     private static Map<String, String> ticketPrices;
 
     public TicketProperties() {

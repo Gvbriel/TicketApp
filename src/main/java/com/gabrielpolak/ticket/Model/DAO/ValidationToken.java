@@ -36,7 +36,6 @@ public class ValidationToken {
 
 
     private ZonedDateTime calculateExpiryTime() {
-
         return ZonedDateTime.now().plusMinutes(15);
     }
 

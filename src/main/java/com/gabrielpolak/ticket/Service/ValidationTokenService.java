@@ -6,6 +6,7 @@ import com.gabrielpolak.ticket.Model.DAO.User;
 import com.gabrielpolak.ticket.Model.DAO.ValidationToken;
 import com.gabrielpolak.ticket.Repository.ValidationTokenRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -29,8 +30,8 @@ public class ValidationTokenService {
 
         ValidationToken token = ValidationToken.createToken(tokenUUID, reservation, user);
         saveValidationToken(token);
-
-        String link = "http://localhost:8080/api/v1/reservations/confirm?token=" + token.getToken();
+        
+        String link = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString() + "/confirm?token=" + token.getToken();
         emailService.send(user.getEmail(), user.getName(), link);
     }
 

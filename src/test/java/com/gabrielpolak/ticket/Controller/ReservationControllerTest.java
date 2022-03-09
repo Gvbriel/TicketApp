@@ -38,24 +38,6 @@ public class ReservationControllerTest {
     String url = "/api/v1/reservations";
 
 
-    private ReservationDTO getReservationDTO(int amount, String email, String name, String surname, Screening screening) {
-        List<TicketRequest> ticketRequestList = new ArrayList<>();
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, amount));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
-        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail(email);
-        userDTO.setName(name);
-        userDTO.setSurname(surname);
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setTickets(ticketRequestList);
-        reservationDTO.setScreeningId(screening.getId());
-        reservationDTO.setUser(userDTO);
-        return reservationDTO;
-    }
-
     @Test
     void creatingNewReservationShouldReturn422AsNotEnoughTickets() throws Exception {
 
@@ -151,5 +133,22 @@ public class ReservationControllerTest {
                 .andExpect(status().is4xxClientError())
                 .andReturn();
     }
+    
+    private ReservationDTO getReservationDTO(int amount, String email, String name, String surname, Screening screening) {
+        List<TicketRequest> ticketRequestList = new ArrayList<>();
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Adult, amount));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Child, 3));
+        ticketRequestList.add(TicketRequest.createNewRequest(TicketType.Student, 4));
 
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(email);
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setTickets(ticketRequestList);
+        reservationDTO.setScreeningId(screening.getId());
+        reservationDTO.setUser(userDTO);
+        return reservationDTO;
+    }
 }
