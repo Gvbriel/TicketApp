@@ -6,7 +6,10 @@ import com.gabrielpolak.ticket.TicketProperties;
 import com.gabrielpolak.ticket.TicketType;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +27,36 @@ public class Ticket {
 
     }
 
-    public static Ticket createNewTicket(TicketType type){
-        return new Ticket(type);
-    }
-
-    public Ticket(TicketType type){
+    public Ticket(TicketType type) {
         this.type = type;
     }
 
-    public BigDecimal getTicketPrice(){
-        Map<String, String> prices = TicketProperties.getTicketPrices();
-        if(prices.get(type.name()) != null){
-            return new BigDecimal(prices.get(type.name()));
-        }
-        throw new NotSupportedTicketTypeException("Not supported type named" + type.name());
+    public static Ticket createNewTicket(TicketType type) {
+        return new Ticket(type);
     }
 
-    public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests){
+    public static List<Ticket> createMultipleTickets(List<TicketRequest> ticketRequests) {
         List<Ticket> ticketList = new ArrayList<>();
 
-        for(TicketRequest request: ticketRequests){
-            for(int i = 0; i < request.getAmount(); i++){
-                ticketList.add(Ticket.createNewTicket(request.getType()));
+        for (TicketRequest request : ticketRequests) {
+            for (int i = 0; i < request.getAmount(); i++) {
+                if (request.getType() != null) {
+                    ticketList.add(Ticket.createNewTicket(request.getType()));
+                } else {
+                    throw new NotSupportedTicketTypeException("Null not supported");
+                }
             }
         }
 
         return ticketList;
+    }
+
+    public BigDecimal getTicketPrice() {
+        Map<String, String> prices = TicketProperties.getTicketPrices();
+        if (prices.get(type.name()) != null) {
+            return new BigDecimal(prices.get(type.name()));
+        }
+        throw new NotSupportedTicketTypeException("Not supported type named" + type.name());
     }
 
 }

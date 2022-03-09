@@ -17,15 +17,24 @@ public class ScreeningService {
         this.screeningRepository = screeningRepository;
     }
 
-    public List<Screening> getDayScreenings(ZonedDateTime dateTime){
-        if(dateTime == null){
+    public List<Screening> getDayScreenings(ZonedDateTime dateTime) {
+        if (dateTime == null) {
             return screeningRepository.findByOrderByDateAscMovietitleAsc();
-        }else{
+        } else {
             return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(DateHelper.getDayStart(dateTime), DateHelper.getDayEnd(dateTime));
         }
     }
 
     public List<Screening> getScreeningsBetween(ZonedDateTime from, ZonedDateTime to) {
         return screeningRepository.findAllByDateBetweenOrderByDateAscMovietitleAsc(DateHelper.getDayStart(from), DateHelper.getDayEnd(to));
+    }
+
+    public void removeTicketsFromScreening(Screening screening, int amount) {
+        screening.removeTickets(amount);
+        screeningRepository.save(screening);
+    }
+
+    public Screening findScreeningById(Long screeningId) {
+        return screeningRepository.findById(screeningId).orElseThrow(() -> new RuntimeException("Can't find screening"));
     }
 }

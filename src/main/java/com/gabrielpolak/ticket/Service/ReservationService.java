@@ -1,14 +1,10 @@
 package com.gabrielpolak.ticket.Service;
 
-import com.gabrielpolak.ticket.Exceptions.InvalidTokenException;
 import com.gabrielpolak.ticket.Exceptions.ReservationTimeException;
 import com.gabrielpolak.ticket.Model.DAO.*;
 import com.gabrielpolak.ticket.Model.DTO.UserDTO;
 import com.gabrielpolak.ticket.Model.Request.TicketRequest;
 import com.gabrielpolak.ticket.Repository.ReservationRepository;
-import com.gabrielpolak.ticket.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Repository.UserRepository;
-import com.gabrielpolak.ticket.Repository.ValidationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -18,22 +14,18 @@ import java.util.List;
 
 @Service
 public class ReservationService {
-    
+
     private final ReservationRepository reservationRepository;
-    private final ScreeningRepository screeningRepository;
-    private final UserRepository userRepository;
+    private final ScreeningService screeningService;
     private final UserService userService;
     private final ValidationTokenService validationTokenService;
-    private final ValidationTokenRepository validationTokenRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, ScreeningRepository screeningRepository, UserRepository userRepository, UserService userService, ApplicationEventPublisher eventPublisher, ValidationTokenService validationTokenService, ValidationTokenRepository validationTokenRepository) {
+    public ReservationService(ReservationRepository reservationRepository, ScreeningService screeningService, UserService userService, ApplicationEventPublisher eventPublisher, ValidationTokenService validationTokenService) {
         this.reservationRepository = reservationRepository;
-        this.screeningRepository = screeningRepository;
-        this.userRepository = userRepository;
+        this.screeningService = screeningService;
         this.userService = userService;
         this.validationTokenService = validationTokenService;
-        this.validationTokenRepository = validationTokenRepository;
     }
 
     public List<Reservation> getReservations() {
@@ -41,8 +33,7 @@ public class ReservationService {
     }
 
     public Reservation createReservation(Long screeningId, List<TicketRequest> ticketRequest, UserDTO userDTO) {
-        Screening screening = screeningRepository.findById(screeningId)
-                .orElseThrow(() -> new RuntimeException("Can't find screening."));
+        Screening screening = screeningService.findScreeningById(screeningId);
 
         if (!ZonedDateTime.now().isBefore(screening.getDate().minusMinutes(15))) {
             throw new ReservationTimeException("It's too late to make reservation right now.");
@@ -52,15 +43,13 @@ public class ReservationService {
 
         User user;
 
-        if (!userRepository.findUserByEmail(userDTO.getEmail()).isPresent()) {
+        if (!userService.checkIfUserExists(userDTO.getEmail())) {
             user = userService.createNewUser(userDTO);
-            userRepository.save(user);
         } else {
-            user = userRepository.findUserByEmail(userDTO.getEmail()).get();
+            user = userService.findUser(userDTO.getEmail());
         }
 
-        screening.removeTickets(ticketList.size());
-        screeningRepository.save(screening);
+        screeningService.removeTicketsFromScreening(screening, ticketList.size());
 
         Reservation reservation = Reservation.createNewReservationWithUserAndExpirationTime(ticketList, screening, user, screening.getDate().minusMinutes(15));
         reservationRepository.save(reservation);
@@ -71,17 +60,14 @@ public class ReservationService {
     }
 
     public Reservation confirmReservation(String token) {
-        validationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new InvalidTokenException("Invalid token"));
-
-        ValidationToken validationToken = validationTokenRepository.findByToken(token).get();
+        ValidationToken validationToken = validationTokenService.findToken(token);
 
         Reservation reservation = validationToken.getReservation();
         reservation.setConfirmed(true);
         reservationRepository.save(reservation);
 
         validationToken.setConfirmedAt(ZonedDateTime.now());
-        validationTokenRepository.save(validationToken);
+        validationTokenService.saveValidationToken(validationToken);
 
         return reservation;
     }

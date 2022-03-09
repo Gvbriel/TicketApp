@@ -1,6 +1,7 @@
 package com.gabrielpolak.ticket.Service;
 
 import com.gabrielpolak.ticket.Email.EmailService;
+import com.gabrielpolak.ticket.Exceptions.InvalidTokenException;
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
 import com.gabrielpolak.ticket.Model.DAO.User;
 import com.gabrielpolak.ticket.Model.DAO.ValidationToken;
@@ -30,7 +31,7 @@ public class ValidationTokenService {
 
         ValidationToken token = ValidationToken.createToken(tokenUUID, reservation, user);
         saveValidationToken(token);
-        
+
         String link = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString() + "/confirm?token=" + token.getToken();
         emailService.send(user.getEmail(), user.getName(), link);
     }
@@ -38,5 +39,10 @@ public class ValidationTokenService {
 
     public boolean validateToken(String token) {
         return validationTokenRepository.findByToken(token).isPresent();
+    }
+
+    public ValidationToken findToken(String token) {
+        return validationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new InvalidTokenException("Invalid token " + token));
     }
 }

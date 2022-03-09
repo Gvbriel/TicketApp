@@ -1,7 +1,6 @@
 package com.gabrielpolak.ticket.Service;
 
 
-import com.gabrielpolak.ticket.Controller.ReservationController;
 import com.gabrielpolak.ticket.Model.DAO.Movie;
 import com.gabrielpolak.ticket.Model.DAO.Reservation;
 import com.gabrielpolak.ticket.Model.DAO.Room;
@@ -25,13 +24,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class ReservationServiceTest {
 
     @Autowired
-    private ReservationController reservationController;
-    @Autowired
     private ReservationService reservationService;
     @Autowired
     private ReservationRepository reservationRepository;
-    @Autowired
-    private ScreeningService screeningService;
     @Autowired
     private ScreeningRepository screeningRepository;
 

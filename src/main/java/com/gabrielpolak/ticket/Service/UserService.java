@@ -14,9 +14,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createNewUser(UserDTO userDTO){
+    public User createNewUser(UserDTO userDTO) {
         User user = userDTO.from(userDTO);
         userRepository.save(user);
         return user;
+    }
+
+    public User findUser(String email) {
+        return userRepository.findUserByEmail(email).get();
+    }
+
+    public boolean checkIfUserExists(String email) {
+        return userRepository.findUserByEmail(email).isPresent();
     }
 }
