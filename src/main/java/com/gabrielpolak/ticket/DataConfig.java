@@ -1,7 +1,7 @@
 package com.gabrielpolak.ticket;
 
-import com.gabrielpolak.ticket.Model.DAO.*;
-import com.gabrielpolak.ticket.Repository.*;
+import com.gabrielpolak.ticket.model.DAO.*;
+import com.gabrielpolak.ticket.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,9 @@ public class DataConfig {
     DateTimeFormatter formatter
             = DateTimeFormatter
             .ISO_ZONED_DATE_TIME;
+
     @Bean
-    CommandLineRunner commandLineRunner(MovieRepository movieRepository, ScreeningRepository screeningRepository, TicketRepository ticketRepository, ReservationRepository reservationRepository, UserRepository userRepository){
+    CommandLineRunner commandLineRunner(MovieRepository movieRepository, ScreeningRepository screeningRepository, TicketRepository ticketRepository, ReservationRepository reservationRepository, UserRepository userRepository) {
         return args -> {
             Movie interstellar = Movie.createMovieWithTitle("Interstellar");
             Movie dzienSwira = Movie.createMovieWithTitle("Dzień Świra");

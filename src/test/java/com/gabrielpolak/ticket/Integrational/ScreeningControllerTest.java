@@ -2,11 +2,11 @@ package com.gabrielpolak.ticket.Integrational;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.gabrielpolak.ticket.Model.DAO.Movie;
-import com.gabrielpolak.ticket.Model.DAO.Room;
-import com.gabrielpolak.ticket.Model.DAO.Screening;
-import com.gabrielpolak.ticket.Repository.ScreeningRepository;
-import com.gabrielpolak.ticket.Service.ScreeningService;
+import com.gabrielpolak.ticket.model.DAO.Movie;
+import com.gabrielpolak.ticket.model.DAO.Room;
+import com.gabrielpolak.ticket.model.DAO.Screening;
+import com.gabrielpolak.ticket.repository.ScreeningRepository;
+import com.gabrielpolak.ticket.service.ScreeningService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
